@@ -3,6 +3,13 @@ class Player:
         self.name = name
         self.est_score = est_score
 
+    
+    def setName(self, name):
+        self.name = name
+
+    def setScore(self, est_score):
+        self.est_score = est_score
+
     def getName(self):
         return self.name
     def getScore(self):

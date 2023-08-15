@@ -1,5 +1,39 @@
 {% extends "base.html" %} {% block title%}Home{% endblock %}
-
+<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}">
+<head>
+    <link rel="stylesheet" href="/website/static/homepage.css">
+</head> -->
 {% block content%}
-<h1>Welcome to Number's Don't lie</h1>
+
+<div style="text-align:center; width:100vw;" class="wrapper">
+    <div class="home-page-content" style="display:inline-flex;padding:2rem;">
+        <div class="big-text">
+            <h1>NUMBERS<br><span>DON'T</span><br>LIE</h1>
+        </div>
+        <div class="text-container" style="width: 45%;">
+            <br><br>
+            <p>The premier resource to help you draft your super bowl winning team!</p>
+        </div>
+    </div>
+</div>
 {% endblock content%}
+
+<!-- <style>
+    .home-page-content{
+        display: inline;
+        background-color: aqua;
+    }
+    
+    .img-container{
+        width: 40%;
+        margin: 0 auto;
+    }
+    .img-container #homeImg{
+        width: 16rem;
+        height: 9.125rem;
+    }
+    .text-container{
+        text-align: center;
+        width: 40%;
+    }
+</style> -->
