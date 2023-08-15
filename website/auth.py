@@ -10,6 +10,7 @@ auth = Blueprint("auth", __name__)
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
+        print(request.form)
         email = request.form.get('email')
         password = request.form.get('password')
 
@@ -56,9 +57,9 @@ def sign_up():
             newUser = User(email=email, firstName=firstName, password=generate_password_hash(password1, method='sha256'))
             db.session.add(newUser)
             db.session.commit()
-            flash("Account created! Back to login", category='success')
+            flash("Account created!", category='success')
 
-            login_user(user, remember=True)
+            login_user(newUser, remember=True)
             return redirect(url_for('views.home'))
 
     return render_template("sign_up.html", user=current_user)

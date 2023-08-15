@@ -1,5 +1,45 @@
 {% extends "base.html" %}{%block title%}Rankings{%endblock%}
 
 {% block content%}
-<h1 align="center">Rankings</h1>
+<div class="rankings-container">
+    <h1>Rankings</h1>
+    <form method="POST">
+        <label for="select-pos">Search By:</label>
+        <select id="selct-pos" name="select-pos">
+            <option id="blank"></option>
+            <option id="qb">QB</option>
+            <option id="rb">RB</option>
+            <option id="wr">WR</option>
+            <option id="def">Defense</option>
+        </select>
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+    <div class="rankings">
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>PPG</th>
+                    <th>    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for player in players %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.est_score }}</td>
+                    <form action="" method="POST">
+                        <td><button name="add-fav" type="submit" class='favorites-btn' value="{{ player.toString() }}" ><i class="fa-regular fa-star fa-sm"></i></button></td>
+                    </form>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 {% endblock content%}

@@ -5,82 +5,94 @@ import pandas as pd
 from IPython.display import display
 import Player
 
-stats_map = {
+def scrape(choice):
+
+    stats_map = {
     'passing': "passing/2022/reg/all/passingyards/desc",
     'rushing': "rushing/2022/reg/all/rushingyards/desc",
     'recieving': "receiving/2022/reg/all/receivingreceptions/desc",
     "fumbles": "fumbles/2022/reg/all/defensiveforcedfumble/desc",
     'interceptions': "interceptions/2022/reg/all/defensiveinterceptions/desc",
-}
+    }
 
-print("Choose: passing, rushing, recieving, fumbles, interceptions")
-choice = input()
+    root = 'https://www.nfl.com'
+    peice1 = "/stats/player-stats/category/"
+    url = root + peice1 + stats_map[choice]
 
-root = 'https://www.nfl.com'
-peice1 = "/stats/player-stats/category/"
-url = root + peice1 + stats_map[choice]
+    headers = []
+    data = []
 
-headers = []
-data = []
+    response = requests.get(url)
 
-response = requests.get(url)
+    page = response.text
 
-page = response.text
+    soup = bs(page, "html.parser")
 
-soup = bs(page, "html.parser")
+    table = soup.find('table', {"class": "d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable"})
+    rows = table('tr')
 
-table = soup.find('table', {"class": "d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable"})
-rows = table('tr')
+    for row in rows:
+        for tag in row:
+            if tag.name == "th":
+                headers.append(tag.get_text().strip())
 
-for row in rows:
-    for tag in row:
-        if tag.name == "th":
-            headers.append(tag.get_text().strip())
+    for row in rows:
+        curr_row = []
+        for tag in row:
+            if tag.name == 'td':
+                curr_row.append(tag.get_text().strip())
+        if curr_row:
+            data.append(curr_row)
 
-for row in rows:
-    curr_row = []
-    for tag in row:
-        if tag.name == 'td':
-            curr_row.append(tag.get_text().strip())
-    if curr_row:
-        data.append(curr_row)
-
-link = soup.find('a', {"class": "nfl-o-table-pagination__next"})
+    link = soup.find('a', {"class": "nfl-o-table-pagination__next"})
 
 
-while link is not None:
-    try:
-        next_url = root + link["href"]
-        # print(next_url)
-        response = requests.get(next_url)
-        page = response.text
-        soup = bs(page, "html.parser")
+    while link is not None:
+        try:
+            next_url = root + link["href"]
+            # print(next_url)
+            response = requests.get(next_url)
+            page = response.text
+            soup = bs(page, "html.parser")
 
-        link = soup.find('a', {'class', "nfl-o-table-pagination__next"})
-        time.sleep(1)
-        table = soup.find('table', {"class": "d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable"})
-        rows = table('tr')
+            link = soup.find('a', {'class', "nfl-o-table-pagination__next"})
+            time.sleep(1)
+            table = soup.find('table', {"class": "d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable"})
+            rows = table('tr')
 
-        for row in rows:
-            for tag in row:
-                if tag.name == "th":
-                    headers.append(tag.get_text().strip())
+            for row in rows:
+                for tag in row:
+                    if tag.name == "th":
+                        headers.append(tag.get_text().strip())
 
-        for row in rows:
-            curr_row = []
-            for tag in row:
-                if tag.name == 'td':
-                    curr_row.append(tag.get_text().strip())
-                if curr_row:
-                    data.append(curr_row)
-    except AttributeError:
-        break
-    except TypeError:
-        break
+            for row in rows:
+                curr_row = []
+                for tag in row:
+                    if tag.name == 'td':
+                        curr_row.append(tag.get_text().strip())
+                    if curr_row:
+                        data.append(curr_row)
+        except AttributeError:
+            break
+        except TypeError:
+            break
 
-# df = pd.DataFrame(data, columns=headers)
 
-# display(df)
+
+
+        players = []
+        names = []
+
+        for row in data:
+            name = row[0]
+            if name not in names:
+                players.append(parseData(choice, row))
+                names.append(name)
+
+        players = quickSort(players)
+        print("Successful!")
+
+    return players
 
 def parseData(choice, row):
     name = row[0]
@@ -92,6 +104,7 @@ def parseData(choice, row):
             ints = float(row[7])
 
             points = (yards * 0.04) + (tds * 4) - ints
+            points = round(points, 1)
             player = Player.Player(name, points)
             
             return player
@@ -102,6 +115,7 @@ def parseData(choice, row):
             fums = float(row[9])
 
             points = ((yards * 0.1) + (tds * 6)) - (fums * 2)
+            points = round(points, 1)
             player = Player.Player(name, points)
            
             return player
@@ -112,6 +126,7 @@ def parseData(choice, row):
             tds = float(row[3])
 
             points = ((yards * 0.1) + (tds * 6)) + (recs * 0.5)
+            points = round(points, 1)
             player = Player.Player(name, points)
             
             return player
@@ -121,6 +136,7 @@ def parseData(choice, row):
             tds = float(row[2])
             
             points = (ints * 2) + (tds * 6)
+            points = round(points, 2)
             player = Player.Player(name, points)
             
             return player
@@ -130,6 +146,7 @@ def parseData(choice, row):
             recovered = float(row[2])
 
             points = forced + (recovered * 2)
+            points = round(points, 1)
             player = Player.Player(name, points)
 
             return player
@@ -157,23 +174,7 @@ def quickSort(players): # players is an arraylist
 
     return quickSort(players_greater) + [pivotPlayer] + quickSort(players_less)
             
-            
 
-players = []
-names = []
-
-for row in data:
-    name = row[0]
-    if name not in names:
-        players.append(parseData(choice, row))
-        names.append(name)
-
-
-
-players = quickSort(players)
-
-for player in players:
-    print(player.toString())
 
 
 

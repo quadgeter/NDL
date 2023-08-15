@@ -16,5 +16,5 @@ class Player:
         return self.est_score
     
     def toString(self):
-        return f"{self.getName()}: {self.getScore()}"
+        return f"{self.getName()}:{self.getScore()}"
         
