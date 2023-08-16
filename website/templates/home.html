@@ -11,18 +11,18 @@
             <h1>NUMBERS<br><span>DON'T</span><br>LIE</h1>
         </div>
     </div>
-</div>
-<div class="home-page-content" style="display:inline-flex;">
-    <div class="ff-img-container">
-        <img src="{{ url_for('static', filename='ff-home.png')}}" alt="" id="ff-img">
+    <div class="home-page-content" style="display:inline-flex;">
+        <div class="ff-img-container">
+            <img src="{{ url_for('static', filename='ff-home.png')}}" alt="" id="ff-img">
+        </div>
+        <div class="text-container">
+            <p>The premier resource to help you draft your super bowl winning team.</p>
+        </div>
     </div>
-    <div class="text-container" style="width: 45%;">
-        <p>The premier resource to help you draft your super bowl winning team.</p>
+    <div class="btn-container">
+        <h1>Draft the Most Promising Players for 2023</h1>
+        <button class="btn btn-primary" id="rankings-btn">View Guide</button>
     </div>
-</div>
-<div class="btn-container">
-    <h1>Draft the Most Promising Players for 2023</h1>
-    <button class="btn btn-primary" id="rankings-btn">View Guide</button>
 </div>
 {% endblock content%}
 

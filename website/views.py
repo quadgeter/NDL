@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import login_required, current_user
+from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
+from flask_login import login_user, login_required, logout_user, current_user
 from test import *
 from .models import Favorite
 from . import db
+import json
 
 views = Blueprint("views", __name__)
 
@@ -13,14 +14,13 @@ def home():
 @views.route("/rankings", methods=['GET', 'POST'])
 def rankings():
     if request.method == "POST":
-        print(request.form)
         pos = request.form.get('select-pos')
         if pos:
             choice_map = {
                 'QB': "passing",
                 'RB': 'rushing',
                 'WR': 'recieving',
-                'Defense': 'Defense'
+                'DEF': 'interceptions'
             }
 
             if pos in choice_map:
@@ -29,7 +29,6 @@ def rankings():
             
         playerString = request.form.get('add-fav')
         if playerString:
-
             if current_user.is_authenticated:
                 ind = playerString.index(":")
                 name = playerString[0:ind]
@@ -37,9 +36,12 @@ def rankings():
 
                 new_fav = Favorite(name=name, ppg=ppg, user_id=current_user.id)
 
-                db.session.add(new_fav)
-                db.session.commit()
-                print("worked")
+                try: 
+                    db.session.add(new_fav)
+                    db.session.commit()
+                    flash("Successfully added to favorites.", category="success")
+                except Exception:
+                    flash("Error. Please Try again later", category='error')
             else:
                 flash("Must login to add favorites.", category='error')
                 return redirect(url_for('auth.login'))
@@ -48,10 +50,29 @@ def rankings():
 
     return render_template("rankings.html", user=current_user)
 
-@views.route("/favorites")
+@views.route("/favorites", methods=['GET', 'POST'])
 @login_required
 def favorites():
-    return render_template("favorites.html", user=current_user)
+    favs = Favorite.query.filter_by(user_id=current_user.id)
+    # if request.method == "POST":
+    #     name_to_del = request.form.get('del-fav')
+    return render_template("favorites.html", user=current_user, favorites=favs)
+
+@views.route('delete-fav', methods=['POST'])
+def delete_fav():
+    fav = json.loads(request.data)
+    favId = fav['favId']
+    fav = Favorite.query.get(favId)
+    if fav:
+        print(fav.user_id)
+        print(current_user.id)
+        if fav.user_id == current_user.id:
+            db.session.delete(fav)
+            db.session.commit()
+            print(fav)
+            
+            
+    return jsonify({})
 
 @views.route("/news")
 def news():

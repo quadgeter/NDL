@@ -1,5 +1,29 @@
 {% extends "base.html" %}{%block title%}Scouting Report{%endblock%}
 
 {% block content%}
-<h1 align="center">Scouting Report</h1>
+<div class="list-container">
+    <h1 align="center">Scouting Report</h1>
+    <div class="list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>PPG</th>
+                    <th>    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for fav in favorites %}
+                <tr>
+                    <td>{{ fav.name }}</td>
+                    <td>{{ fav.ppg }}</td>
+                    <td>
+                        <button name="del-fav" type="submit" class='close' onClick="deleteFav({{ fav.id }})" value="{{ fav.name }}" ><span aria-hidden="true">&times;</span></button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock content%}

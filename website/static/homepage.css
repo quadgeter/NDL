@@ -15,7 +15,7 @@ form label, input{
     margin: 0 8px;
 }
 .header{
-    width: 98%;
+    width: 100%;
     height: fit-content;
     background-color: rgb(0, 0, 0);
     display: block;
@@ -24,7 +24,7 @@ form label, input{
 }
 
 .home-page-content{
-    width: 98vw;
+    width: 100%;
     height: fit-content;
     background-color: rgb(0, 0, 0);
     display: block;
@@ -37,13 +37,15 @@ form label, input{
     padding: 50px 0;
 }
 .ff-img-container #ff-img{
-    width: 16rem;
-    height: 9.125rem;
+    width: 40vw;
+    height: 25.125vh;
 }
 
 .text-container{
     width: 40%;
+    max-width: 500px;
     padding: 50px 0;
+    margin-right: 30px;
     color: white;
 }
 .text-container p{
@@ -67,7 +69,7 @@ form label, input{
 .btn-container{
     background-color: black;
     text-align: center;
-    width: 98vw;
+    width: 100%;
 } 
 .btn-container h1{
     font-size: 2.2rem;
@@ -115,18 +117,18 @@ form label, input{
     border: 2px 
 }
 
-.rankings-container{
+.list-container{
     margin: 5px;
     min-height: 78vh;
-    width: 97vw;
+    width: 98vw;
     text-align: center;
 }
-.rankings{
+.list{
     width: 80%;
     margin: 10px auto;
     border-radius: 8px;
 }
-.rankings table, th, td{
+.list table, th, td{
     padding: 1rem;
 }
 table{
@@ -154,3 +156,4 @@ td button i:hover{
     transition: 0.5s;
     color: gold;
 }
+

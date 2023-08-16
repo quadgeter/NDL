@@ -1,7 +1,7 @@
 {% extends "base.html" %}{%block title%}Rankings{%endblock%}
 
 {% block content%}
-<div class="rankings-container">
+<div class="list-container">
     <h1>Rankings</h1>
     <form method="POST">
         <label for="select-pos">Search By:</label>
@@ -10,11 +10,11 @@
             <option id="qb">QB</option>
             <option id="rb">RB</option>
             <option id="wr">WR</option>
-            <option id="def">Defense</option>
+            <option id="def">DEF</option>
         </select>
-        <button type="submit" class="search-btn">Search</button>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    <div class="rankings">
+    <div class="list">
         <table>
             <thead>
                 <tr>
@@ -31,9 +31,11 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ player.name }}</td>
                     <td>{{ player.est_score }}</td>
-                    <form action="" method="POST">
-                        <td><button name="add-fav" type="submit" class='favorites-btn' value="{{ player.toString() }}" ><i class="fa-regular fa-star fa-sm"></i></button></td>
-                    </form>
+                    <td>
+                        <form method="POST">
+                            <button name="add-fav" type="submit" class='favorite-btn' value="{{ player.toString() }}" ><i class="fa-regular fa-star fa-sm"></i></button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
