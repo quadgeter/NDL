@@ -13,6 +13,14 @@
                 </tr>
             </thead>
             <tbody>
+            {% if empty %}
+            <tr class="default-row">
+                <td class="default-data">No favorites added yet.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% else %}
             {% for fav in favorites %}
                 <tr>
                     <td>{{ fav.name }}</td>
@@ -22,6 +30,7 @@
                     </td>
                 </tr>
             {% endfor %}
+            {% endif %}
             </tbody>
         </table>
     </div>

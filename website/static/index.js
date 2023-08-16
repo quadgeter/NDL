@@ -7,13 +7,11 @@ function deleteFav(favId){
     });
 }
 
-function addFav(favId, favName, favPpg){
-    fetch("/add-fav", {
-        method: "POST",
-        body: JSON.stringify({ favId: favId,
-        favName: favName,
-        favPpg: favPpg }),
-    }).then((_res) => {
+const viewGuideBtns = document.querySelectorAll("#rankings-btn")
+
+viewGuideBtns.forEach(ele => {
+    ele.addEventListener('click', () => {
         window.location.href = "/rankings"
     });
-}
+});
+

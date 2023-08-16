@@ -13,20 +13,27 @@ def home():
 
 @views.route("/rankings", methods=['GET', 'POST'])
 def rankings():
-    if request.method == "POST":
-        pos = request.form.get('select-pos')
-        if pos:
-            choice_map = {
-                'QB': "passing",
-                'RB': 'rushing',
-                'WR': 'recieving',
-                'DEF': 'interceptions'
-            }
+    global players
+    if request.method == "GET":
+        if not request.args:
+            pass
+        else:
+            pos = request.args['select-pos']
+            if pos:
+                choice_map = {
+                    'QB': 'passing',
+                    'RB': 'rushing',
+                    'WR': 'recieving',
+                    'DEF': 'interceptions'
+                }
 
-            if pos in choice_map:
-                players = scrape(choice_map[pos])
-                return render_template("rankings.html", players=players, user=current_user)
+                if pos in choice_map:
+                    players = scrape(choice_map[pos])
+                    return render_template("rankings.html", players=players, user=current_user, loaded=True)
+            else:
+                flash("Please select a category.", category='error')
             
+    elif request.method == "POST":     
         playerString = request.form.get('add-fav')
         if playerString:
             if current_user.is_authenticated:
@@ -40,6 +47,7 @@ def rankings():
                     db.session.add(new_fav)
                     db.session.commit()
                     flash("Successfully added to favorites.", category="success")
+                    return render_template("rankings.html", players=players, user=current_user, loaded=True)
                 except Exception:
                     flash("Error. Please Try again later", category='error')
             else:
@@ -48,15 +56,17 @@ def rankings():
         else:
             flash("An error has occured. Try again later.", category='error')
 
-    return render_template("rankings.html", user=current_user)
+    return render_template("rankings.html", user=current_user, loaded=False)
 
 @views.route("/favorites", methods=['GET', 'POST'])
 @login_required
 def favorites():
     favs = Favorite.query.filter_by(user_id=current_user.id)
-    # if request.method == "POST":
-    #     name_to_del = request.form.get('del-fav')
-    return render_template("favorites.html", user=current_user, favorites=favs)
+    if favs.count() < 1:
+        empty = True
+    else:
+        empty = False
+    return render_template("favorites.html", user=current_user, favorites=favs, empty=empty)
 
 @views.route('delete-fav', methods=['POST'])
 def delete_fav():
@@ -64,18 +74,19 @@ def delete_fav():
     favId = fav['favId']
     fav = Favorite.query.get(favId)
     if fav:
-        print(fav.user_id)
-        print(current_user.id)
         if fav.user_id == current_user.id:
             db.session.delete(fav)
             db.session.commit()
             print(fav)
-            
             
     return jsonify({})
 
 @views.route("/news")
 def news():
     return render_template("news.html", user=current_user)
+
+@views.route("/contact", methods=["GET", "POST"])
+def contact():
+    return render_template("contact.html", user=current_user)
 
 

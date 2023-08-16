@@ -3,7 +3,7 @@
 {% block content%}
 <div class="list-container">
     <h1>Rankings</h1>
-    <form method="POST">
+    <form method="GET">
         <label for="select-pos">Search By:</label>
         <select id="selct-pos" name="select-pos">
             <option id="blank"></option>
@@ -12,7 +12,7 @@
             <option id="wr">WR</option>
             <option id="def">DEF</option>
         </select>
-        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="submit" class="btn btn-primary" style="vertical-align:top;padding:0 5px;background-color:#F05D22;border:none;">Search</button>
     </form>
     <div class="list">
         <table>
@@ -26,22 +26,29 @@
                 </tr>
             </thead>
             <tbody>
+            {% if loaded %}
             {% for player in players %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ player.name }}</td>
                     <td>{{ player.est_score }}</td>
                     <td>
-                        <form method="POST">
+                        <form id="pos-form" method="POST">
                             <button name="add-fav" type="submit" class='favorite-btn' value="{{ player.toString() }}" ><i class="fa-regular fa-star fa-sm"></i></button>
                         </form>
                     </td>
                 </tr>
             {% endfor %}
+            {% else %}
+                <tr class="default-row">
+                    <td class="default-data">Search to load data.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
             </tbody>
         </table>
     </div>
 </div>
-
-
 {% endblock content%}
