@@ -21,7 +21,7 @@
                     
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>PPG</th>
+                    <th class="has-tooltip"><span class="tooltip-text">Estimated fantasy points/game</span>PPG</th>
                     <th>    </th>
                 </tr>
             </thead>
@@ -32,9 +32,10 @@
                     <td>{{ loop.index }}</td>
                     <td>{{ player.name }}</td>
                     <td>{{ player.est_score }}</td>
-                    <td>
+                    <td class="has-tooltip">
+                        <span class="tooltip-text fav">Add to favorites</span>
                         <form id="pos-form" method="POST">
-                            <button name="add-fav" type="submit" class='favorite-btn' value="{{ player.toString() }}" ><i class="fa-regular fa-star fa-sm"></i></button>
+                            <button name="add-fav" type="submit" class='favorite-btn' value="{{ player.toString() }}" ><i class="fa-solid fa-plus fa-sm"></i></button>
                         </form>
                     </td>
                 </tr>

@@ -118,7 +118,7 @@ form label, input{
 }
 
 .list-container{
-    margin: 5px;
+    margin: 5px auto;
     min-height: 75vh;
     width: 98vw;
     text-align: center;
@@ -154,10 +154,57 @@ td button{
     cursor: pointer;
 }
 td button i{
-    color: black;
+    color: #343A3F;
 }
 td button i:hover{
-    transition: 0.25s;
-    color: gold;
+    transition: 0.1s;
+    color: #F05D22;
+}
+
+.has-tooltip{
+    position: relative;
+}
+
+.tooltip-text{
+    position: absolute;
+    right: 50%;
+    top: 0;
+    transform: translateX(50%);
+
+    background-color: #c8cdd1;
+    color: black;
+    padding: 1px;
+    font-size: 0.75rem;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.tooltip-text::before{
+    content: "";
+    position: absolute;
+    right: 50%;
+    top: 0;
+    transform: translateX(50%);
+}
+.has-tooltip:hover .tooltip-text{
+    visibility: visible;
+    opacity: 1;
+    top: -50%;
+    right: -15%;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 0 4px grey;
+}
+
+.has-tooltip:hover .fav{
+    visibility: visible;
+    opacity: 1;
+    top: -10%;
+    right: 0;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 0 4px grey;
 }
 

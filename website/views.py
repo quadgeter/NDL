@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
-from test import *
+from scraper import *
 from .models import Favorite
 from . import db
 import json
+import config
 
 views = Blueprint("views", __name__)
 
@@ -28,7 +29,7 @@ def rankings():
                 }
 
                 if pos in choice_map:
-                    players = scrape(choice_map[pos])
+                    players = scrapeStats(choice_map[pos])
                     return render_template("rankings.html", players=players, user=current_user, loaded=True)
             else:
                 flash("Please select a category.", category='error')
@@ -40,6 +41,12 @@ def rankings():
                 ind = playerString.index(":")
                 name = playerString[0:ind]
                 ppg = float(playerString[ind+1:])
+
+                duplicates = Favorite.query.filter_by(name=name, user_id=current_user.id)
+
+                if duplicates.count() > 0:
+                    flash('Already in your favorites.', category='error')
+                    return render_template("rankings.html", players=players, user=current_user, loaded=True)
 
                 new_fav = Favorite(name=name, ppg=ppg, user_id=current_user.id)
 
@@ -59,8 +66,11 @@ def rankings():
     return render_template("rankings.html", user=current_user, loaded=False)
 
 @views.route("/favorites", methods=['GET', 'POST'])
-@login_required
 def favorites():
+    if not current_user.is_authenticated:
+        config.lastPage = "views.favorites"
+        flash("Must log in to access this page.", category='error')
+        return redirect(url_for("auth.login"))
     favs = Favorite.query.filter_by(user_id=current_user.id)
     if favs.count() < 1:
         empty = True
@@ -81,9 +91,15 @@ def delete_fav():
             
     return jsonify({})
 
-@views.route("/news")
-def news():
-    return render_template("news.html", user=current_user)
+@views.route("/injuries")
+def injuries():
+    if not current_user.is_authenticated:
+        config.lastPage = "views.favorites"
+        flash("Must log in to access this page.", category='error')
+        return redirect(url_for("auth.login"))
+    injuries = False
+    # injuries = scrapeInjuries()
+    return render_template("injuries.html", injuries=injuries, user=current_user)
 
 @views.route("/contact", methods=["GET", "POST"])
 def contact():

@@ -1,30 +1,33 @@
-{% extends "base.html" %}{%block title%}Scouting Report{%endblock%}
+{% extends "base.html" %}{%block title%}Injury Report{%endblock%}
 
 {% block content%}
 <div class="list-container">
-    <h1 align="center">Scouting Report</h1>
+    <h1 align="center">Injury Report</h1>
     <div class="list">
         <table>
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th class="has-tooltip"><span class="tooltip-text">Estimated fantasy points/game</span>PPG</th>
-                    <th>    </th>
+                    <th>Pos</th>
+                    <th>Injuries</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-            {% if empty %}
+            {% if not injuries %}
             <tr class="default-row">
-                <td class="default-data">No favorites added yet.</td>
+                <td class="default-data">No injuries this week :)</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             {% else %}
-            {% for fav in favorites %}
+            {% for injury in injuries %}
                 <tr>
-                    <td>{{ fav.name }}</td>
-                    <td>{{ fav.ppg }}</td>
+                    <td>{{ injury.name }}</td>
+                    <td>{{ injury.pos }}</td>
+                    <td>{{ injury.injuries }}</td>
+                    <td>{{ injury.status }}</td>
                     <td>
                         <button name="del-fav" type="submit" class='close' onClick="deleteFav({{ fav.id }})" value="{{ fav.name }}" ><span aria-hidden="true">&times;</span></button>
                     </td>
@@ -35,4 +38,5 @@
         </table>
     </div>
 </div>
+
 {% endblock content%}

@@ -1,4 +1,6 @@
 class Player:
+    name = ""
+    est_score = 0
     def __init__(self, name, est_score) -> None:
         self.name = name
         self.est_score = est_score
