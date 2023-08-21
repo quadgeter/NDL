@@ -1,16 +1,16 @@
 {% extends "base.html" %} {% block title%}Home{% endblock %}
 {% block content%}
-<div class="contact-info">
+<div class="contact-form">
     <form method="POST">
-        <label for="first-name">First Name</label>
-        <input type="text" id="first-name" name="first-name" placeholder="First Name">
-        <label for="last-name">Last Name</label>
-        <input type="text" id="last-name" name="last-name" placeholder="Last Name">
-        <label for="questions-concerns">Questions and Concerns</label>
-        <input name="question-concerns" id="question-concerns" placeholder="You can tell us anything">
-        <label for="bugs">Experience any bugs during your visit?</label>
-        <input type="text" name="bugs", id="bugs" placeholder="Let us know!">
-    </form>
+        <label for="first-name">First Name</label><br />
+        <input type="text" id="first-name" name="first-name" placeholder="First Name"><br />
+        <label for="last-name">Last Name</label><br />
+        <input type="text" id="last-name" name="last-name" placeholder="Last Name"><br />
+        <label for="questions-concerns">Questions and Concerns</label><br />
+        <input name="question-concerns" id="question-concerns" placeholder="Anything"><br />
+        <label for="bugs">Experience any bugs during your visit?</label><br />
+        <input type="text" name="bugs", id="bugs" placeholder="Let us know!"><br />
+    </form> 
     <h1>Feel free to email us directly at numbersdontlie@gmail.com.</h1>
 </div>
 {% endblock content%}

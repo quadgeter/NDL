@@ -274,3 +274,21 @@ td button i:hover{
 #load-more:hover{
     background-color: #F05D22;
 }
+
+.contact-form{
+    margin: 10px;
+    width: 90%;
+    min-height: 72vh;
+}
+.contact-form input{
+    padding-right: 40vw;
+    margin-left: 10px;
+}
+.contact-form label, input{
+    margin: 5px;
+}
+.contact-form h1{
+    padding-top: 20px;
+    font-size: 24px;
+    text-align: center;
+}
