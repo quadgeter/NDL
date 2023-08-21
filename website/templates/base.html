@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +16,11 @@
             href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
             crossorigin="anonymous"
         />
+        <link
+            rel="text/javascript"
+            href="{{ url_for('static', filename='index.js')}}"
+            crossorigin="anonymous"
+        />
         <link 
             rel="stylesheet"
             href="{{ url_for('static', filename='homepage.css')}}"
@@ -24,7 +29,7 @@
         <script src="https://kit.fontawesome.com/3f263d7cad.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav style="width:100vw;" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <button class="navbar-toggler" type="button"              data-toggle="collapse" data-target="#navbar">
                 <span class="navbar-toggler-icon"></span>
             </button>

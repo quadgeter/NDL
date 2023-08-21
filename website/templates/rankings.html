@@ -1,18 +1,19 @@
-{% extends "base.html" %}{%block title%}Rankings{%endblock%}
+{% extends "base.html" %}
+{%block title%}Rankings{%endblock%}
 
 {% block content%}
 <div class="list-container">
     <h1>Rankings</h1>
     <form method="GET">
         <label for="select-pos">Search By:</label>
-        <select id="selct-pos" name="select-pos">
+        <select id="select-pos" name="select-pos">
             <option id="blank"></option>
             <option id="qb">QB</option>
             <option id="rb">RB</option>
             <option id="wr">WR</option>
             <option id="def">DEF</option>
         </select>
-        <button type="submit" class="btn btn-primary" style="vertical-align:top;padding:0 5px;background-color:#F05D22;border:none;">Search</button>
+        <button type="submit" id="search-btn" class="btn btn-primary" style="vertical-align:top;padding:0 5px;background-color:#F05D22;border:none;">Search</button>
     </form>
     <div class="list">
         <table>
@@ -50,6 +51,29 @@
             {% endif %}
             </tbody>
         </table>
+        {% if loaded_all or not loaded %}
+        {% else %}
+        <form id="load-form" method="GET">
+            <button id="load-more" class="btn btn-primary" type="submit" value="Load more" name="load-more">Load more</button>
+        </form>
+        {% endif %}
     </div>
 </div>
+<div class="loader"></div>
+<p class="loading-msg">Please wait.<br /> May take a minute.</p>
+
+<script >
+    const loader = document.querySelector('.loader');
+    const loadingMsg = document.querySelector('.loading-msg');
+    window.addEventListener('load', () => {
+        loader.classList.add("loader-hidden");
+        loadingMsg.classList.add("loading-msg-hidden");
+    });
+    
+    const searchBtn = document.querySelector("#search-btn");
+    searchBtn.addEventListener('click', () => {
+        loader.classList.remove("loader-hidden");
+        loadingMsg.classList.remove("loading-msg-hidden");
+    });
+</script>
 {% endblock content%}

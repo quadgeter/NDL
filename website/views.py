@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, logout_user, current_user
+import werkzeug
 from scraper import *
 from .models import Favorite
 from . import db
@@ -15,10 +16,20 @@ def home():
 @views.route("/rankings", methods=['GET', 'POST'])
 def rankings():
     global players
+    global choice_map
+    global pos
     if request.method == "GET":
         if not request.args:
             pass
         else:
+            try: 
+                if request.args["load-more"]:
+                    loaded_all = True
+                    players = loadAll(choice_map[pos])
+                    return render_template("rankings.html", players=players, user=current_user, loaded=True, loaded_all=loaded_all)
+            except werkzeug.exceptions.BadRequestKeyError:
+                print('key error')
+            print(request.args)
             pos = request.args['select-pos']
             if pos:
                 choice_map = {
@@ -30,7 +41,8 @@ def rankings():
 
                 if pos in choice_map:
                     players = scrapeStats(choice_map[pos])
-                    return render_template("rankings.html", players=players, user=current_user, loaded=True)
+                    loaded_all = False
+                    return render_template("rankings.html", players=players, user=current_user, loaded=True, loaded_all=loaded_all)
             else:
                 flash("Please select a category.", category='error')
             

@@ -106,7 +106,74 @@ def scrapeStats(choice):
     headers = []
     data = []
 
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+        
+    except requests.exceptions.ConnectionError as e:
+        response = "No response"
+
+    page = response.text
+
+    soup = bs(page, "html.parser")
+
+    table = soup.find('table', {"class": "d3-o-table d3-o-table--detailed d3-o-player-stats--detailed d3-o-table--sortable"})
+    rows = table('tr')
+
+    for row in rows:
+        for tag in row:
+            if tag.name == "th":
+                headers.append(tag.get_text().strip())
+
+    for row in rows:
+        curr_row = []
+        for tag in row:
+            if tag.name == 'td':
+                curr_row.append(tag.get_text().strip())
+        if curr_row:
+            data.append(curr_row)
+
+    link = soup.find('a', {"class": "nfl-o-table-pagination__next"})
+
+    players = []
+    names = []
+
+    for row in data:
+        name = row[0]
+        if name not in names:
+            player = parsePlayer(choice, row)
+            if player.est_score >= 1:
+                players.append(parsePlayer(choice, row))
+                names.append(name)
+
+    players = quickSort(players)
+    print("Successful!")
+
+    return players
+
+
+
+def loadAll(choice):
+
+    stats_map = {
+        'passing': "passing/2022/reg/all/passingyards/desc",
+        'rushing': "rushing/2022/reg/all/rushingyards/desc",
+        'recieving': "receiving/2022/reg/all/receivingreceptions/desc",
+        "fumbles": "fumbles/2022/reg/all/defensiveforcedfumble/desc",
+        'interceptions': "interceptions/2022/reg/all/defensiveinterceptions/desc",
+        }
+
+    root = 'https://www.nfl.com'
+    peice1 = "/stats/player-stats/category/"
+    url = root + peice1 + stats_map[choice]
+
+    headers = []
+    data = []
+
+    try:
+        response = requests.get(url)
+        
+    except requests.exceptions.ConnectionError as e:
+        response = "No response"
 
     page = response.text
 
@@ -164,21 +231,21 @@ def scrapeStats(choice):
 
 
 
-        players = []
-        names = []
+    players = []
+    names = []
 
-        for row in data:
-            name = row[0]
-            if name not in names:
+    for row in data:
+        name = row[0]
+        if name not in names:
+            player = parsePlayer(choice, row)
+            if player.est_score >= 1:
                 players.append(parsePlayer(choice, row))
                 names.append(name)
 
-        players = quickSort(players)
-        print("Successful!")
+    players = quickSort(players)
+    print("Successful!")
 
     return players
-
-
 
 # TODO will uncomment when season begins (no injuries to scrape)
 
