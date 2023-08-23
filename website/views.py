@@ -115,6 +115,13 @@ def injuries():
 
 @views.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        fName = request.form.get('first-name')
+        lName = request.form.get('last-name')
+        feedback = request.form.get('questions-concerns')
+        bugs = request.form.get('bugs')
+        
+        print(f"{fName + ' ' + lName}\nFeedback: {feedback}\nBugs: {bugs}")
     return render_template("contact.html", user=current_user)
 
 
