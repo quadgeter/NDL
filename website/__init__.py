@@ -4,12 +4,12 @@ from os import path
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-DB_NAME = "playerDB.db"
+DB_NAME = "-------"
 
 def createApp():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "IV"
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jqezfrngzgqqxk:8c2fd19ab3fca5815d638d25980bcdceeb7cb0d1c57647bced97cbcfa2c22f30@ec2-3-232-218-211.compute-1.amazonaws.com:5432/d5om337l1m5vv5'
+ #   app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://-----'
   #  app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'        #sqlite database
     db.init_app(app)
 
