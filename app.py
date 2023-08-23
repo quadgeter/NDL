@@ -4,4 +4,4 @@ import os
 app = createApp()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=os.environ.get("PORT", 8080))
