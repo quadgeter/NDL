@@ -8,7 +8,7 @@ DB_NAME = "-------"
 
 def createApp():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = "IV"
+    app.config['SECRET_KEY'] = "--"
  #   app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://-----'
   #  app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'        #sqlite database
     db.init_app(app)
